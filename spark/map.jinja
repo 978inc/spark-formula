@@ -6,13 +6,23 @@
 
 {% if spark.with_hadoop == True %}
   {% set versions = vmap["with_hadoop"] %}
-  {% set _name = versions[spark.version]["name"] %}
-  {% set _hash = versions[spark.version]["hash"]%}
 {% else %}
   {% set versions = vmap["without_hadoop"] %}
-  {% set _name = versions[spark.version]["name"] %}
-  {% set _hash = versions[spark.version]["hash"]%}  
 {% endif %}
+
+
+{% set v = spark.version %}
+{% if v not in versions %}
+{% set v = "default" %}
+{% endif %}
+
+
+{% set _name = versions[v]["name"] %}
+{% set _hash = versions[v]["hash"]%}
+
+
+
+
 
 {% if versions is defined and spark.version in versions.keys() %}
   {% set archive_name = versions[spark.version]['name'] %}

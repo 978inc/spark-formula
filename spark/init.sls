@@ -23,7 +23,11 @@ spark-cache-archive:
         - salt://{{ archive_name  }}        
         - salt://files/{{ archive_name  }}
         - {{ spark.archive_url }}
+    {% if spark.archive_hash -%}
     - source_hash: {{ spark.archive_hash }}
+    {% else -%}
+    - skip_verify: true
+    {% endif -%}
     - user: root
     - group: root
     - unless:

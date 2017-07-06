@@ -64,5 +64,8 @@ without_hadoop:
   "2.1.0":
     name: "spark-%(version)s-bin-without-hadoop"
     hash: "sha256=3ca4ecb0eb9a00de5099cc2564ed957433a2d15d9d645a60470324621853c5ae"
+  "default":
+    name: "spark-%(version)s-bin-without-hadoop"
+    hash: ~
 {% endload %}
 
