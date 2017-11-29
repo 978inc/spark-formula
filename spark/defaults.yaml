@@ -9,18 +9,26 @@ default:
   work_dir: /tmp/spark
   pid_dir: /var/run/spark
   niceness: 0
-
-  version: "2.1.0"
+  
+  # controls the version of spark to be installed
+  version: "2.2.0"
+  # used to build the artifact filename
   hadoop_version: "2.7"
+  # set to false if the "without-hadoop" version is desired
   with_hadoop: true
-  archive_url_base: http://download.nextag.com/apache/spark
-  archive_hash_url_base: https://archive.apache.org/dist/spark
+  # 
   archive_type: "tgz"
+
+  # use a mirror to fetch the scala artifact
+  archive_url_base: http://download.nextag.com/apache/spark
+  # use the official servers to pull in Apache GPG keys and artifact signatures
+  archive_hash_url_base: https://archive.apache.org/dist/spark
+
   # used for minion targeting and master discovery
   worker_role: 'spark-worker'
   master_role: 'spark-master'
   
-  master_host: ~
+  master_host: 127.0.0.1
   master_port: 7077
   master_ui_port: 8080
   master_opts: []
@@ -39,11 +47,16 @@ default:
   init_system: ~
   init_scripts: ~
   init_overrides: ~
-  
+
+  package_deps: []
+    
 Debian:
   init_system: systemd
   init_scripts: /etc/systemd/system
   init_overrides: /etc/default
+  package_deps:
+    - scala
+    - git
   java_deps:
     - default-jre
     - default-jdk
@@ -51,6 +64,9 @@ RedHat:
   init_system: systemd
   init_scripts: /usr/lib/systemd/system
   init_overrides: /etc/systemd/system
+  package_deps:
+    - scala
+    - git
   java_deps:
     - java-1.8.0-openjdk
     - java-1.8.0-openjdk-devel

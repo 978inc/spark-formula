@@ -7,9 +7,7 @@ driver:
 verifier:
   name: inspec
   sudo: true
-  patterns:
-    - tests/integration/default
-    
+        
 provisioner:
   name: salt_solo
   log_level: debug
@@ -39,12 +37,20 @@ platforms:
 
 suites:
   - name: default
-
+    verifier:
+      inspec_tests:
+        - name: spark-default
+          path: test/integration/default
+      controls:
+        - baseline
+        
   - name: worker
     verifier:
-      patterns:
-        - tests/integration/default/
-        
+      inspec_tests:
+        - name: spark-worker
+          path: test/integration/default
+      controls:
+        - worker
     provisioner:
       grains:
         roles:
@@ -59,8 +65,14 @@ suites:
       
   - name: master
     verifier:
-      patterns:
-        - tests/integration/default/
+      inspec_tests:
+        - name: spark-master
+          path: test/integration/default
+      controls:
+        - spark-baseline
+        - spark-master-service
+        - spark-master-ports
+            
     provisioner:
       grains:
         roles:

@@ -1,6 +1,10 @@
 {% from "spark/map.jinja" import spark with context %}
 
-{% if spark.worker_role in grains.get('roles', []) %}
+  
+include:
+  - spark
+
+
 {{ spark.worker_service }}-properties-file:
   file.managed:
     - name: {{ "%s/spark-defaults.conf"|format(spark.config_dir) }}
@@ -10,6 +14,9 @@
     - mode: 644
     - force: true
     - replace: true
+    - require:
+        - sls: spark
+
     - source:
         - salt://files/spark-defaults.conf
         - salt://spark/files/spark-defaults.conf
@@ -56,4 +63,3 @@
     - watch:
         - file: {{ spark.worker_role }}-service
         - file: {{ spark.worker_role }}-service-defaults
-{% endif %}
