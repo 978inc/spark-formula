@@ -10,7 +10,8 @@
 {% set archive_name = "spark-%(version)s-bin-without-hadoop"|format(spark.version) %}
 {% endif %}
 
-{% set url = spark.archive_url % spark %}
+{% set url = '%s/spark-%s'|format(spark.archive_url_base, spark.version) %}
+{% set hash_url = "%s/spark-%s/%s.%s.md5"|format(spark.archive_hash_url_base,spark.version, archive_name, spark.archive_type )%}
 {% set real_root = "%s/%s"|format(spark.prefix, archive_name) %}
 
 {% do spark.update({
@@ -19,6 +20,7 @@
   'bin_dir': '%s/bin'|format(real_root),
   "archive_name": archive_name,
   "archive_url": "%s/%s.%s"|format(url, archive_name, spark.archive_type),
+  "archive_hash_url": hash_url,
   "master_uri": "spark://%s:%s"|format(spark.master_host, spark.master_port)
 }) %}
 {% endwith %}

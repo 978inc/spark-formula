@@ -22,7 +22,7 @@ spark-cache-archive:
   file.managed:
     - name: {{ "/tmp/%s"|format(archive_name) }}
     - source: {{ spark.archive_url }}
-    - source_hash: {{ spark.archive_hash }}
+    - source_hash: {{ spark.archive_hash_url }}
     - user: root
     - group: root
     - unless:
