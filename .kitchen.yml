@@ -4,6 +4,12 @@ driver:
   network:
     - ["private_network", { ip: "192.168.55.55"}]
 
+verifier:
+  name: inspec
+  sudo: true
+  patterns:
+    - tests/integration/default
+    
 provisioner:
   name: salt_solo
   omnibus_cachier: true
@@ -18,16 +24,41 @@ provisioner:
   grains:
     roles:
       - spark-worker
-      - spark-master
+
   state_top:
     base:
       "*":
         - spark
         - spark.debug
-        - spark.master
-        - spark.worker
+
 platforms:
-  - name: ubuntu-16.04
+  - name: ubuntu
+    driver:
+      box: bento/ubuntu-17.04
 
 suites:
   - name: default
+
+  - name: worker
+    verifier:
+      patterns:
+        - tests/integration/default/
+    provisioner:
+      state_top:
+        base:
+          '*':
+            - spark
+            - spark.debug
+            - spark.worker
+      
+  - name: master
+    verifier:
+      patterns:
+        - tests/integration/default/
+    provisioner:
+      state_top:
+        base:
+          '*':
+            - spark
+            - spark.debug
+            - spark.master
