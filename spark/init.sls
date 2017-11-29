@@ -14,20 +14,15 @@ spark-preflight:
         - default-jre
     - unless:
         - which java
-    
+
+
 {% set archive_name = "%s.%s"|format(spark.archive_name, spark.archive_type) %}
+
 spark-cache-archive:
   file.managed:
     - name: {{ "/tmp/%s"|format(archive_name) }}
-    - source:
-        - salt://{{ archive_name  }}        
-        - salt://files/{{ archive_name  }}
-        - {{ spark.archive_url }}
-    {% if spark.archive_hash -%}
+    - source: {{ spark.archive_url }}
     - source_hash: {{ spark.archive_hash }}
-    {% else -%}
-    - skip_verify: true
-    {% endif -%}
     - user: root
     - group: root
     - unless:
