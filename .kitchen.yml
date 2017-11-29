@@ -12,7 +12,12 @@ verifier:
     
 provisioner:
   name: salt_solo
+  log_level: debug
   omnibus_cachier: true
+  salt_install: bootstrap
+  salt_version: latest
+  salt_minion_id: kitchen-test-spark
+  
   formula: spark
   pillars-from-files:
     spark.sls: pillar.example
@@ -21,10 +26,6 @@ provisioner:
       base:
         "*":
           - spark
-  grains:
-    roles:
-      - spark-worker
-
   state_top:
     base:
       "*":
@@ -43,7 +44,12 @@ suites:
     verifier:
       patterns:
         - tests/integration/default/
+        
     provisioner:
+      grains:
+        roles:
+          - spark-worker
+
       state_top:
         base:
           '*':
@@ -56,6 +62,9 @@ suites:
       patterns:
         - tests/integration/default/
     provisioner:
+      grains:
+        roles:
+          - spark-master
       state_top:
         base:
           '*':
