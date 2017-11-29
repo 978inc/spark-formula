@@ -11,7 +11,7 @@
 {% endif %}
 
 {% set url = '%s/spark-%s'|format(spark.archive_url_base, spark.version) %}
-{% set hash_url = "%s/spark-%s/%s.%s.md5"|format(spark.archive_hash_url_base,spark.version, archive_name, spark.archive_type )%}
+{% set hash_url = "%s/spark-%s/%s.%s.asc"|format(spark.archive_hash_url_base,spark.version, archive_name, spark.archive_type )%}
 {% set real_root = "%s/%s"|format(spark.prefix, archive_name) %}
 
 {% do spark.update({

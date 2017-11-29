@@ -1,4 +1,7 @@
 {% from "spark/map.jinja" import spark with context %}
+{% with archive_name = "%s.%s"|format(spark.archive_name, spark.archive_type) %}
+{% set artifact = '/tmp/%s'|format(archive_name) %}
+{% set pub_key = '/tmp/spark-pub-keys.asc' %}
 
 spark-preflight:
   group.present:
@@ -14,20 +17,52 @@ spark-preflight:
         - default-jre
     - unless:
         - which java
+  cmd.run:
+    - name: |
+        curl -s https://archive.apache.org/dist/spark/KEYS -o {{ pub_key }}
+    - require:
+        - pkg: spark-preflight
+        - user: spark-preflight
 
-
-{% set archive_name = "%s.%s"|format(spark.archive_name, spark.archive_type) %}
+install-gpg:
+  pkg.installed:
+    - pkgs:
+        - gpg
+        - python-gnupg
+    - require:
+        - cmd: spark-preflight
+          
+{{ '%s.asc'|format(artifact) }}:  
+  file.managed:
+    - name: {{ '%s.asc'|format(artifact) }}
+    - source: {{ spark.archive_hash_url }}
+    - skip_verify: true
+      
+import-apache-keyes:
+  module.run:
+    - name: gpg.import_key
+    - kwargs:
+        user: salt
+        filename: {{ pub_key }}
+    - watch_in:
+      - cmd: spark-cache-archive
+      
 
 spark-cache-archive:
   file.managed:
-    - name: {{ "/tmp/%s"|format(archive_name) }}
+    - name: {{ artifact }}
     - source: {{ spark.archive_url }}
-    - source_hash: {{ spark.archive_hash_url }}
-    - user: root
-    - group: root
+    - skip_verify: true
     - unless:
-        - test -f {{ "/tmp/%s"|format(archive_name) }}
+        - test -f {{ artifact }}
 
+  cmd.run:
+    - name: |
+        gpg --homedir=/etc/salt/gpgkeys --verify {{ '%s.asc'|format(artifact) }} {{ artifact }}
+    - require:
+        - file: {{ '%s.asc'|format(artifact) }}
+        - file: spark-cache-archive
+          
 spark-extract-archive:
   file.directory:
     - names:
@@ -43,7 +78,7 @@ spark-extract-archive:
   archive.extracted:
     - name: {{ spark.prefix }}
     - source:
-        - file:///tmp/{{ archive_name }}
+        - file://{{ artifact }}
         - salt://{{ archive_name }}
         - {{ spark.archive_url }}
     - user: {{ spark.user }}
@@ -51,7 +86,7 @@ spark-extract-archive:
     - if_missing: {{ spark.alt_root }}
     - archive_format: tar
     - require:
-        - file: spark-cache-archive
+        - cmd: spark-cache-archive
           
 
 spark-update-path:
@@ -94,3 +129,4 @@ spark-logging:
     - user: {{ spark.user }}
     - group: {{ spark.user }}
     - mode: 644
+{% endwith %}
