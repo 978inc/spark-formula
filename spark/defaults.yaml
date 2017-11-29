@@ -13,8 +13,8 @@ default:
   version: "2.1.0"
   hadoop_version: "2.7"
   with_hadoop: true
-  archive_url: "https://archive.apache.org/dist/spark/spark-%(version)s"
-  archive_hash: sha256=97fd2cc58e08975d9c4e4ffa8d7f8012c0ac2792bcd9945ce2a561cf937aebcc
+  archive_url_base: http://download.nextag.com/apache/spark
+  archive_hash_url_base: https://archive.apache.org/dist/spark
   archive_type: "tgz"
   # used for minion targeting and master discovery
   worker_role: 'spark-worker'
