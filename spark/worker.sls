@@ -1,6 +1,6 @@
 {% from "spark/map.jinja" import spark with context %}
 
-{% if spark.worker_role in grains.roles %}
+{% if spark.worker_role in grains.get('roles', []) %}
 {{ spark.worker_service }}-properties-file:
   file.managed:
     - name: {{ "%s/spark-defaults.conf"|format(spark.config_dir) }}

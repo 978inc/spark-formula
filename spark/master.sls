@@ -4,7 +4,7 @@ include:
   - spark
   - spark.debug
   
-{% if spark.master_role in grains.roles %}
+{% if spark.master_role in grains.get('roles', []) %}
 {% with srv = spark.master_service %}
 {{ srv }}-properties-file:
   file.managed:
