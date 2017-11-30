@@ -32,22 +32,28 @@ control 'spark-baseline' do
 
   describe file('/opt/spark') do
     it { should be_directory }
+    it { should be_symlink } 
     it { should be_owned_by 'spark'}
   end
 
-  describe file('/etc/spark/spark-env.sh') do
-    it { should be_file }
-    it { should be_owned_by 'root' }
-    it { should be_readable_by 'group' }
-    it { should be_readable_by 'other' }
-    it { should_not be_writable_by 'group' }
-    it { should_not be_writable_by 'other' }
-  end
 
   describe file('/opt/spark/bin/pyspark') do
     it { should be_file }
     it { should be_owned_by 'spark' }
     it { should be_executable }
+  end
+
+end
+
+control 'spark-defaults' do
+  describe file('/etc/spark/spark-defaults.conf') do
+    it { should be_file }
+    it { should be_owned_by 'spark' }
+  end
+
+  describe file('/etc/spark/spark-env.sh') do
+    it { should be_file }
+    it { should be_owned_by 'spark' }
   end
   
 end
