@@ -14,9 +14,6 @@ include:
     - mode: 644
     - force: true
     - replace: true
-    - require:
-        - sls: spark
-
     - source:
         - salt://files/spark-defaults.conf
         - salt://spark/files/spark-defaults.conf

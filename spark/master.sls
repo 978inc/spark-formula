@@ -2,9 +2,7 @@
 
 include:
   - spark
-  - spark.debug
   
-{% if spark.master_role in grains.get('roles', []) %}
 {% with srv = spark.master_service %}
 {{ srv }}-properties-file:
   file.managed:
@@ -59,4 +57,3 @@ include:
         - file: {{ srv }}-service
         - file: {{ srv }}-defaults
 {% endwith %}
-{% endif %}
