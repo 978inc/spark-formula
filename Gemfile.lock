@@ -49,7 +49,7 @@ GEM
       test-kitchen (~> 1.6)
     kitchen-salt (0.0.23)
       test-kitchen (~> 1.4)
-    kitchen-vagrant (0.20.0)
+    kitchen-vagrant (1.2.1)
       test-kitchen (~> 1.4)
     little-plugger (1.1.4)
     logging (2.2.2)

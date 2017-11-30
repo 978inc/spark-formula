@@ -1,9 +1,7 @@
 ---
 driver:
   name: vagrant
-  network:
-    - ["private_network", { ip: "192.168.55.55"}]
-
+  
 verifier:
   name: inspec
   sudo: true
@@ -35,6 +33,7 @@ platforms:
     driver:
       box: bento/ubuntu-17.04
 
+
 suites:
   - name: default
     verifier:
@@ -43,7 +42,6 @@ suites:
           path: test/integration/default
       controls:
         - spark-baseline
-        - spark-defaults
         
   - name: worker
     verifier:
