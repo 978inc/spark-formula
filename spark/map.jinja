@@ -1,4 +1,9 @@
-{% from "spark/defaults.yaml" import lookup_map as lmap  with context %}
+{% from "spark/defaults.yaml" import lookup_map as lmap, config as cmap  with context %}
+
+
+
+{% set config = salt['grains.get']('spark:config', cmap) %}
+
 
 {% set spark = salt['grains.filter_by'](lmap, merge=salt['pillar.get']('spark:lookup', salt['grains.get']('spark:lookup', {}), merge=True), base='default') %}
 
@@ -7,12 +12,13 @@
 {% if spark.with_hadoop == True %}
 {% set archive_name = "spark-%s-bin-hadoop%s"|format(spark.version, spark.hadoop_version)  %}
 {% else %}
-{% set archive_name = "spark-%(version)s-bin-without-hadoop"|format(spark.version) %}
+{% set archive_name = "spark-%s-bin-without-hadoop"|format(spark.version) %}
 {% endif %}
 
 {% set url = '%s/spark-%s'|format(spark.archive_url_base, spark.version) %}
 {% set hash_url = "%s/spark-%s/%s.%s.asc"|format(spark.archive_hash_url_base,spark.version, archive_name, spark.archive_type )%}
 {% set real_root = "%s/%s"|format(spark.prefix, archive_name) %}
+
 
 {% do spark.update({
   'real_root': real_root,
@@ -21,6 +27,8 @@
   "archive_name": archive_name,
   "archive_url": "%s/%s.%s"|format(url, archive_name, spark.archive_type),
   "archive_hash_url": hash_url,
-  "master_uri": "spark://%s:%s"|format(spark.master_host, spark.master_port)
+  "master_uri": "spark://%s:%s"|format(spark.master_host, spark.master_port),
+  'config': config,
+  'work_dir': spark.get('work_dir', '%s/work'|format(real_root))
 }) %}
 {% endwith %}
