@@ -57,7 +57,7 @@ include:
         - file: {{ srv }}-service
         - file: {{ srv }}-defaults
 
-spark-master-configs:
+{{ srv }}-spark-env.sh:
   file.managed:
     - name: {{ spark.config_dir }}/spark-env.sh
     - source:
@@ -69,7 +69,7 @@ spark-master-configs:
     - group: {{ spark.user }}
     - mode: 644
 
-spark-master-logging:
+{{ srv }}-logging:
   file.managed:
     - name: {{ spark.config_dir }}/log4j.properties
     - source:
@@ -81,7 +81,7 @@ spark-master-logging:
     - mode: 644
 
 
-spark-master-defaults:
+{{ srv }}-defaults.conf:
   file.managed:
     - name: {{ spark.config_dir }}/spark-defaults.conf
     - template: jinja
