@@ -25,4 +25,4 @@ before_script:
   - make test | tail
 
 script:
-  - bundle exec kitchen test 
+  - KITCHEN_LOCAL_YAML=.kitchen.docker.yml bundle exec kitchen test 
