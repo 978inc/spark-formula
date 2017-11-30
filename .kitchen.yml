@@ -51,7 +51,12 @@ suites:
         - name: spark-worker
           path: test/integration/default
       controls:
-        - worker
+        - spark-baseline
+        - spark-defaults
+        - sw-01
+        - sw-02
+        - sw-03
+        - sw-04
     provisioner:
       grains:
         roles:
