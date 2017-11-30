@@ -12,7 +12,7 @@ end
 control 'sw-02' do
   title 'Check for open ports'
   impact 1.0
-  portlist = [8081]
+  portlist = [8081,4044]
   for p in portlist do
     describe port(p) do
       it { should be_listening }
@@ -30,7 +30,7 @@ control 'sw-03' do
     it { should be_readable.by('owner') }
     it { should be_readable.by('group') }
     it { should be_readable.by('other') }
-    it { should_not be_writable.by('owner') }
+    it { should be_writable.by('owner') }
     it { should be_writable.by('group') }
     it { should_not be_writable.by('other') }
     
