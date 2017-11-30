@@ -10,7 +10,7 @@ install:
   - pip install PyYAML
   - pip install virtualenv
   - |
-    test -e Gemfile || cat <<EOF > Gemfile
+    cat <<EOF | tee  Gemfile
     source 'https://rubygems.org'
     gem 'rake'
     gem 'test-kitchen'
