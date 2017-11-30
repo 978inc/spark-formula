@@ -2,6 +2,9 @@ sudo: required
 services:
   - docker
 
+env:
+  - KITCHEN_LOCAL_YAML=.kitchen-docker.yml
+  
 before_install:
   - sudo apt-get update
   - curl -L http://bootstrap.saltstack.org | sudo sh -s -- git develop
@@ -18,6 +21,8 @@ install:
     gem 'kitchen-inspec'
     gem 'inspec'
     gem 'kitchen-salt', :git => 'https://github.com/salt-formulas/kitchen-salt.git'
+    EOF
+  - rm Gemfile.lock
   - bundle install
 
 before_script:
@@ -25,4 +30,4 @@ before_script:
   - make test | tail
 
 script:
-  - KITCHEN_LOCAL_YAML=.kitchen-docker.yml bundle exec kitchen test 
+  -  bundle exec kitchen test 
