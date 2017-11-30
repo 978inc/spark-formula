@@ -107,26 +107,5 @@ spark-setup-profile:
     - group: root
     - mode: 644
 
-spark-update-configs:
-  file.managed:
-    - name: {{ spark.config_dir }}/spark-env.sh
-    - source:
-        - salt://spark/files/spark-env_sh.jinja
-        # fallback to the default (empty) from the distribution
-        - file://{{ spark.real_root }}/conf/spark-env.sh.template
-    - template: jinja
-    - user: {{ spark.user }}
-    - group: {{ spark.user }}
-    - mode: 644
-
-spark-logging:
-  file.managed:
-    - name: {{ spark.config_dir }}/log4j.properties
-    - source:
-        - salt://spark/files/log4j-properties.jinja
-        - file://{{ spark.real_root }}/conf/log4j.properties.template
-    - template: jinja
-    - user: {{ spark.user }}
-    - group: {{ spark.user }}
-    - mode: 644
+      
 {% endwith %}
