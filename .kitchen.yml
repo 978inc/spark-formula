@@ -42,7 +42,8 @@ suites:
         - name: spark-default
           path: test/integration/default
       controls:
-        - baseline
+        - spark-baseline
+        - spark-defaults
         
   - name: worker
     verifier:
