@@ -23,7 +23,7 @@ install:
     gem 'kitchen-salt', :git => 'https://github.com/salt-formulas/kitchen-salt.git'
 
 before_script:
-  - bundle instsall
+  - bundle install
 
 
 script:
