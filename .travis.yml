@@ -21,13 +21,10 @@ install:
     gem 'kitchen-inspec'
     gem 'inspec'
     gem 'kitchen-salt', :git => 'https://github.com/salt-formulas/kitchen-salt.git'
-    EOF
-  - rm Gemfile.lock
-  - bundle install
 
 before_script:
-  - set -o pipefail
-  - make test | tail
+  - bundle instsall
+
 
 script:
   -  bundle exec kitchen test 
