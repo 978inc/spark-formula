@@ -7,9 +7,9 @@ env:
   - LC_ALL="en_US.UTF-8"
   - LC_CTYPE="en_US.UTF-8"
   
-before_install:
-  - sudo apt-get update
-  - curl -L http://bootstrap.saltstack.org | sudo sh 
+# before_install:
+#   - sudo apt-get update
+#   - curl -L http://bootstrap.saltstack.org | sudo sh 
 
 install:
   - pip install PyYAML
