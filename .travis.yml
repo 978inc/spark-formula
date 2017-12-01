@@ -4,6 +4,8 @@ services:
 
 env:
   - KITCHEN_LOCAL_YAML=.kitchen-docker.yml
+  - LC_ALL="en_US.UTF-8"
+  - LC_CTYPE="en_US.UTF-8"
   
 before_install:
   - sudo apt-get update
